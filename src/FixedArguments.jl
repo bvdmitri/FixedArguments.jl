@@ -121,19 +121,13 @@ function process_fixedargs(::Val{N}, regime, processed, fixedargs::Tuple) where 
 end
 
 # If the argument is not fixed simply skip it
-function process_fixedargs(
-    ::Val{N}, regime, processed, current::NotFixed, remaining::Tuple
-) where {N}
+function process_fixedargs(::Val{N}, regime, processed, current::NotFixed, remaining::Tuple) where {N}
     return process_fixedargs(Val(N + 1), regime, processed, remaining)
 end
 
 # Extract the position for the current fixed argument
-function process_fixedargs(
-    ::Val{N}, regime, processed, current::FixedArgument, remaining::Tuple
-) where {N}
-    return process_fixedargs(
-        Val(N), regime, processed, position(current), current, remaining
-    )
+function process_fixedargs(::Val{N}, regime, processed, current::FixedArgument, remaining::Tuple) where {N}
+    return process_fixedargs(Val(N), regime, processed, position(current), current, remaining)
 end
 
 # If the argument already has a fixed position simply include it in the list of fixed arguments
@@ -147,9 +141,7 @@ end
 function process_fixedargs(
     ::Val{N}, regime, processed, ::AutoPosition, current::FixedArgument, remaining::Tuple
 ) where {N}
-    return process_fixedargs(
-        Val(N), regime, processed, FixedArgument(N, value(current)), remaining
-    )
+    return process_fixedargs(Val(N), regime, processed, FixedArgument(N, value(current)), remaining)
 end
 
 # Check ascending args function checks that the argument are aligned in the ascending order
@@ -161,30 +153,18 @@ function check_ascending_args(::Val{N}, checked, fixedargs::Tuple) where {N}
     return check_ascending_args(Val(N), checked, first(fixedargs), Base.tail(fixedargs))
 end
 
-function check_ascending_args(
-    ::Val{N}, checked::Tuple{}, current::FixedArgument, remaining::Tuple
-) where {N}
-    return check_ascending_args(
-        Val(N), checked, FixedPosition(0), position(current), current, remaining
-    )
+function check_ascending_args(::Val{N}, checked::Tuple{}, current::FixedArgument, remaining::Tuple) where {N}
+    return check_ascending_args(Val(N), checked, FixedPosition(0), position(current), current, remaining)
 end
 function check_ascending_args(::Val{N}, checked, current::FixedArgument, remaining::Tuple) where {N}
-    return check_ascending_args(
-        Val(N), checked, position(last(checked)), position(current), current, remaining
-    )
+    return check_ascending_args(Val(N), checked, position(last(checked)), position(current), current, remaining)
 end
 
 function check_ascending_args(
-    ::Val{N},
-    checked,
-    ::FixedPosition{Pr},
-    ::FixedPosition{Pc},
-    current::FixedArgument,
-    remaining::Tuple,
+    ::Val{N}, checked, ::FixedPosition{Pr}, ::FixedPosition{Pc}, current::FixedArgument, remaining::Tuple
 ) where {N,Pr,Pc}
-    N >= length(checked) && (Pc >= length(checked)) && (Pc >= N) && (Pr < Pc) || throw(
-        ErrorException("Fixed position $Pc is not in ascending order (previous was $Pr)"),
-    )
+    N >= length(checked) && (Pc >= length(checked)) && (Pc >= N) && (Pr < Pc) ||
+        throw(ErrorException("Fixed position $Pc is not in ascending order (previous was $Pr)"))
     return check_ascending_args(Val(N + 1), (checked..., current), remaining)
 end
 
@@ -202,7 +182,7 @@ end
 
 function inject_arguments(
     unpack::F, args::Tuple, position::FixedPosition{P}, current::FixedArgument, remaining
-) where {F, P}
+) where {F,P}
     newargs = TupleTools.insertafter(args, P - 1, (unpack(position, value(current)),))
     return inject_arguments(unpack, newargs, remaining)
 end
