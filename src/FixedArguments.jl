@@ -141,7 +141,9 @@ end
 function process_fixedargs(
     ::Val{N}, regime, processed, ::AutoPosition, current::FixedArgument, remaining::Tuple
 ) where {N}
-    return process_fixedargs(Val(N), regime, processed, FixedArgument(N, value(current)), remaining)
+    return process_fixedargs(
+        Val(N + 1), regime, (processed..., FixedArgument(FixedPosition(N), value(current))), remaining
+    )
 end
 
 # Check ascending args function checks that the argument are aligned in the ascending order

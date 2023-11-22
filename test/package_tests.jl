@@ -54,10 +54,27 @@ end
 end
 
 @testitem "Test zero allocations" begin
-    import FixedArguments: fix, FixedArgument
+    import FixedArguments: fix, FixedArgument, NotFixed, AutoPosition, FixedPosition
     import AllocCheck: check_allocs
 
     foo(x, y, z) = x * y + z
+
+    @test length(check_allocs(fix, (typeof(foo), Tuple{}))) === 0
+    @test length(check_allocs(fix, (typeof(foo), Tuple{NotFixed}))) === 0
+    @test length(check_allocs(fix, (typeof(foo), Tuple{FixedArgument{1}, Int}))) === 0
+    @test length(check_allocs(fix, (typeof(foo), Tuple{FixedArgument{1, Int}, FixedArgument{2, Int}}))) === 0
+    @test length(check_allocs(fix, (typeof(foo), Tuple{FixedArgument{AutoPosition, Int}}))) === 0
+    @test length(check_allocs(fix, (typeof(foo), Tuple{FixedArgument{AutoPosition, Int}, FixedArgument{AutoPosition, Int}}))) === 0
+
+    @test length(check_allocs(fix(foo, (FixedArgument(1), FixedArgument(2))), (Int,))) === 0
+    @test length(check_allocs(fix(foo, (FixedArgument(1), FixedArgument(2))), (Float64,))) === 0
+    @test length(check_allocs(fix(foo, (FixedArgument(1), )), (Int, Int))) === 0
+    @test length(check_allocs(fix(foo, (FixedArgument(1), )), (Float64, Float64))) === 0
+
+    @test length(check_allocs(fix(foo, (_, x) -> 1, (FixedArgument(1), FixedArgument(2))), (Int,))) === 0
+    @test length(check_allocs(fix(foo, (_, x) -> 1, (FixedArgument(1), FixedArgument(2))), (Float64,))) === 0
+    @test length(check_allocs(fix(foo, (_, x) -> 1, (FixedArgument(1), )), (Int, Int))) === 0
+    @test length(check_allocs(fix(foo, (_, x) -> 1, (FixedArgument(1), )), (Float64, Float64))) === 0
 
     @test length(check_allocs(fix(foo, (FixedArgument(1, 1), FixedArgument(2, 2))), (Int,))) === 0
     @test length(check_allocs(fix(foo, (FixedArgument(1, 1), FixedArgument(2, 2))), (Float64,))) === 0
