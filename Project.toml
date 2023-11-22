@@ -1,13 +1,21 @@
-name = "FixedArgumentsCallable"
+name = "FixedArguments"
 uuid = "4130a065-6d82-41fe-881e-7a5c65156f7d"
 authors = ["Bagaev Dmitry <bvdmitri@gmail.com> and contributors"]
-version = "1.0.0-DEV"
+version = "1.0.0"
+
+[deps]
+TupleTools = "9d95972d-f1c8-5527-a6e0-b4b365fa01f6"
 
 [compat]
-julia = "1"
+TupleTools = "1"
+julia = "1.9"
 
 [extras]
+AllocCheck = "9b6a8646-10ed-4001-bbdc-1d2f46dfbb1a"
+Aqua = "4c88cf16-eb10-579e-8560-4a9242c79595"
+CpuId = "adafc99b-e345-5852-983c-f28acb93d879"
+ReTestItems = "817f1d60-ba6b-4fd5-9520-3cf149f6a823"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["Test"]
+test = ["Aqua", "AllocCheck", "CpuId", "ReTestItems", "Test"]
