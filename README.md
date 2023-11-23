@@ -31,9 +31,15 @@ Suppose you want to fix the first and third arguments of this function. Using po
 ```julia
 import FixedArguments: fix, FixedArgument
 
-# Fixes the argument at position `1` with the value `1`
-#   and the argument at position `3` with the value `3`
+# Fixes the argument at position `1` with the value `1.0`
+#       the argument at position `3` with the value `3.0`
 fixed_foo = fix(foo, (FixedArgument(1, 1.0), FixedArgument(2, 3.0))) 
+```
+
+The resulting function can be called as 
+
+```julia
+fixed_foo(2.0) # 5.0
 ```
 
 **Note**: Positions must be known at compile-time to avoid dynamic dispatch. Additionally, positions should be specified in ascending order.
@@ -43,9 +49,9 @@ fixed_foo = fix(foo, (FixedArgument(1, 1.0), FixedArgument(2, 3.0)))
 For sequential-based fixing, the same example would be written as:
 
 ```julia
-# Fixes the argument at position `1` with the value `1`
+# Fixes the argument at position `1` with the value `1.0`
 #       the argument at position `2` is not being fixed
-#   and the argument at position `3` with the value `3`
+#       the argument at position `3` with the value `3.0`
 fixed_foo = fix(foo, (FixedArgument(1.0), NotFixed(), FixedArgument(3.0))) 
 ```
 
