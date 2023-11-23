@@ -12,7 +12,7 @@ Similar projects:
 - [`ChainedFixes.jl`](https://github.com/Tokazama/ChainedFixes.jl)
 - [`AccessorsExtra.jl`](https://github.com/JuliaObjects/Accessors.jl)
 
-The key distinction of this package is its simplicity and lightweight design. Its single purpose is to generate __a function with fixed values__ for specific arguments, incurring __no additional computational overhead__. Notably, it is not using macro-based sugar-syntax in favor of an ultra-minimalistic API. Additionally, the package offers the ability to modify fixed values using a custom transform function.
+The key distinction of this package is its simplicity and lightweight design. Its single purpose is to generate __a function with fixed values__ for specific arguments __programmatically__, incurring __no additional computational overhead__. Notably, it is not using macro-based sugar-syntax in favor of an ultra-minimalistic API. Additionally, the package offers the ability to modify fixed values using a custom transform function.
 
 ## Simple example
 
