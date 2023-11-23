@@ -42,7 +42,7 @@ The resulting function can be called as
 fixed_foo(2.0) # 5.0
 ```
 
-**Note**: Positions must be known at compile-time to avoid dynamic dispatch. Additionally, positions should be specified in ascending order.
+**Note**: While not strictly necessary, for optimal performance and to avoid dynamic dispatch, it is recommended to have positions known at compile-time. Also, ensure that positions are specified in ascending order.
 
 ### Sequential based fixing
 

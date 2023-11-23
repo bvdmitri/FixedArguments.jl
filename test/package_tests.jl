@@ -53,6 +53,21 @@ end
     @test_throws MixedFixedArgumentsException fix(foo, (FixedArgument(1), NotFixed(), FixedArgument(3, 3)))
 end
 
+@testitem "Check dynamic positionning" begin
+    import FixedArguments: fix, FixedArgument
+
+    foo(x, y, z) = x * y + z
+    
+    positions = [ 1, 2, 3 ]
+    values = [ 1.0, 2.0, 3.0 ]
+    
+    arguments = (map(d -> FixedArgument(d[1], d[2]), zip(positions, values))..., )
+
+    fixed_foo = fix(foo, arguments)
+
+    @test fixed_foo() == 5.0
+end
+
 @testitem "Cache based transform (example from the README)" begin 
     import FixedArguments: fix, FixedArgument, FixedPosition
 
