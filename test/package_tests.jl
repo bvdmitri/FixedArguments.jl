@@ -53,6 +53,32 @@ end
     @test_throws MixedFixedArgumentsException fix(foo, (FixedArgument(1), NotFixed(), FixedArgument(3, 3)))
 end
 
+@testitem "Cache based transform (example from the README)" begin 
+    import FixedArguments: fix, FixedArgument, FixedPosition
+
+    function unpack_from_cache_instead(::FixedPosition{P}, cache) where {P}
+        return cache[P]
+    end
+
+    foo(x, y, z) = x * y + z
+    
+    some_global_cache = Dict()
+    
+    some_global_cache[1] = 1.0
+    some_global_cache[2] = 2.0
+    some_global_cache[3] = 3.0
+
+    cached_foo = fix(foo, unpack_from_cache_instead, (FixedArgument(some_global_cache), FixedArgument(some_global_cache), FixedArgument(some_global_cache)))
+
+    @test cached_foo() == 5.0
+
+    some_global_cache[1] = 3.0
+    some_global_cache[2] = 2.0
+    some_global_cache[3] = 1.0
+
+    @test cached_foo() == 7.0
+end
+
 @testitem "Test zero allocations" begin
     import FixedArguments: fix, FixedArgument, NotFixed, AutoPosition, FixedPosition
     import AllocCheck: check_allocs

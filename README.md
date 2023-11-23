@@ -79,9 +79,17 @@ some_global_cache = Dict()
 
 some_global_cache[1] = 1.0
 some_global_cache[2] = 2.0
-some_global_cache[3] = 2.0
+some_global_cache[3] = 3.0
 
 cached_foo = fix(foo, unpack_from_cache_instead, (FixedArgument(some_global_cache), FixedArgument(some_global_cache), FixedArgument(some_global_cache)))
+
+cached_foo() # 5.0
+
+some_global_cache[1] = 3.0
+some_global_cache[2] = 2.0
+some_global_cache[3] = 1.0
+
+cached_foo() # 7.0
 ```
 
 **Note** The object that is returned from the `fix` function is not a subtype of `Function`.
