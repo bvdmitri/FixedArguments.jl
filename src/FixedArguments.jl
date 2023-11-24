@@ -2,9 +2,6 @@ module FixedArguments
 
 using TupleTools
 
-"""
-FixedCallable(fn, fixedargs, [ unpack ])
-"""
 struct FixedCallable{F,A,U}
     fn::F
     unpack::U
@@ -27,6 +24,7 @@ struct FixedArgument{P,V}
 end
 
 FixedArgument(value::V) where {V} = FixedArgument(AutoPosition(), value)
+
 function FixedArgument(position::Integer, value::V) where {V}
     return FixedArgument(FixedPosition(position), value)
 end
@@ -35,6 +33,86 @@ position(argument::FixedArgument) = argument.position
 value(argument::FixedArgument) = argument.value
 
 default_unpack(_, value) = value
+
+"""
+    fix(fn, fixargs::Tuple)
+    fix(fn, transform, fixargs::Tuple)
+
+Returns a proxy to `fn` given the `fixedargs` tuple. The proxy will call `fn` with the arguments fixed in place.
+
+### Position-based fixing
+
+```jldoctest
+import FixedArguments: fix, FixedArgument
+
+foo(x, y, z) = x * y + z
+
+# Fixes the argument at position `1` with the value `1.0`
+#       the argument at position `3` with the value `3.0`
+fixed_foo = fix(foo, (FixedArgument(1, 1.0), FixedArgument(3, 3.0))) 
+
+# The resulting function can be called as 
+
+fixed_foo(2.0) 
+
+# output
+5.0
+```
+
+### Sequential-based fixing
+
+```jldoctest
+import FixedArguments: fix, FixedArgument, NotFixed
+
+foo(x, y, z) = x * y + z
+
+# Fixes the argument at position `1` with the value `1.0`
+#       the argument at position `2` is not being fixed
+#       the argument at position `3` with the value `3.0`
+fixed_foo = fix(foo, (FixedArgument(1.0), NotFixed(), FixedArgument(3.0))) 
+
+fixed_foo(2.0)
+
+# output
+5.0
+```
+
+### Optional transformation
+
+Optionally, accepts a `tranform` function as a second argument, which allows to transform 
+fixed arguments dynamically based on their position right before calling the original function.
+
+```jldoctest
+import FixedArguments: FixedPosition, fix, FixedArgument
+
+foo(x, y, z) = x * y + z
+
+function unpack_from_ref(::FixedPosition{P}, ref::Ref) where {P}
+    return ref[]
+end
+
+var1 = Ref(1.0)
+var2 = Ref(2.0)
+var3 = Ref(3.0)
+
+cached_foo = fix(foo, unpack_from_ref, (FixedArgument(var1), FixedArgument(var2), FixedArgument(var3)))
+
+println(cached_foo()) # prints 5.0
+
+var1[] = 3.0
+var2[] = 2.0
+var3[] = 1.0
+
+println(cached_foo()) # prints 7.0
+
+nothing #hide
+
+# output
+5.0
+7.0
+```
+"""
+function fix end
 
 function fix(fn::F, fixedargs::Tuple) where {F}
     return fix(fn, default_unpack, fixedargs)
