@@ -33,7 +33,7 @@ import FixedArguments: fix, FixedArgument
 
 # Fixes the argument at position `1` with the value `1.0`
 #       the argument at position `3` with the value `3.0`
-fixed_foo = fix(foo, (FixedArgument(1, 1.0), FixedArgument(2, 3.0))) 
+fixed_foo = fix(foo, (FixedArgument(1, 1.0), FixedArgument(3, 3.0))) 
 ```
 
 The resulting function can be called as 
