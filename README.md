@@ -4,15 +4,7 @@
 [![Coverage](https://codecov.io/gh/bvdmitri/FixedArgumentsCallable.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/bvdmitri/FixedArgumentsCallable.jl)
 [![Code Style: Blue](https://img.shields.io/badge/code%20style-blue-4495d1.svg)](https://github.com/invenia/BlueStyle)
 
-This package serves as a straightforward and lightweight extension of Julia's Base.Fix1 and Base.Fix2 functionalities.
-
-Similar projects:
-
-- [`FixArgs.jl`](https://github.com/goretkin/FixArgs.jl)
-- [`ChainedFixes.jl`](https://github.com/Tokazama/ChainedFixes.jl)
-- [`AccessorsExtra.jl`](https://github.com/JuliaObjects/Accessors.jl)
-
-The key distinction of this package is its simplicity and lightweight design. Its single purpose is to generate __a function with fixed values__ for specific arguments __programmatically__, incurring __no additional computational overhead__. Notably, it is not using macro-based sugar-syntax in favor of an ultra-minimalistic API. Additionally, the package offers the ability to modify fixed values using a custom transform function.
+This package serves as a straightforward and lightweight extension of Julia's `Base.Fix1` and `Base.Fix2` functionalities. The key distinction of this package is its simplicity and lightweight design. Its single purpose is to generate __a function with fixed values__ for specific arguments __programmatically__, incurring __no additional computational overhead__. Notably, it is not using macro-based sugar-syntax in favor of an ultra-minimalistic API. Additionally, the package offers the ability to modify fixed values using a custom transform function.
 
 ## Simple example
 
@@ -115,3 +107,9 @@ some_global_cache[3] = 1.0
 ```
 
 **Note** The object that is returned from the `fix` function is not a subtype of `Function`.
+
+Projects with similar functionality:
+
+- [`FixArgs.jl`](https://github.com/goretkin/FixArgs.jl)
+- [`ChainedFixes.jl`](https://github.com/Tokazama/ChainedFixes.jl)
+- [`AccessorsExtra.jl`](https://github.com/JuliaObjects/Accessors.jl)
