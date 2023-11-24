@@ -155,3 +155,15 @@ end
     @test length(check_allocs(fix(foo, (_, x) -> 1, (FixedArgument(1, 1), FixedArgument(3, 3))), (Int,))) === 0
     @test length(check_allocs(fix(foo, (_, x) -> 1, (FixedArgument(1, 1), FixedArgument(3, 3))), (Float64,))) === 0
 end
+
+@testitem "Return the same function is statics are empty" begin 
+    import FixedArguments: fix
+
+    foo(x, y, z) = x * y + z
+
+    @test fix(foo, ()) === foo
+    @test fix(foo, ())(1, 2, 3) === 5
+
+    @test fix(foo, (_, x) -> 1, ()) === foo
+    @test fix(foo, (_, x) -> 1, ())(1, 2, 3) === 5
+end

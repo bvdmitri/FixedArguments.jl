@@ -124,6 +124,10 @@ function fix(fn::F, unpack::U, fixedargs::Tuple) where {F,U}
     return FixedCallable(fn, unpack, _checked_fixedargs)
 end
 
+function fix(fn::F, unpack::U, ::Tuple{}) where {F, U}
+    return fn
+end
+
 # We do not want to mix `FixedArgument`s with different positioning regimes
 # FixedArgument(position, value) - switches to the `ExactPositioningRegime`
 # FixedArgument(value) - switches to the `AutoPositioningRegime`
