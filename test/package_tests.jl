@@ -94,6 +94,30 @@ end
     @test cached_foo() == 7.0
 end
 
+@testitem "Ref based transform (example from README)" begin 
+    import FixedArguments: FixedPosition, FixedArgument, fix
+
+    function unpack_from_ref(::FixedPosition{P}, ref::Ref) where {P}
+        return ref[]
+    end
+
+    foo(x, y, z) = x * y + z
+
+    var1 = Ref(1.0)
+    var2 = Ref(2.0)
+    var3 = Ref(3.0)
+
+    cached_foo = fix(foo, unpack_from_ref, (FixedArgument(var1), FixedArgument(var2), FixedArgument(var3)))
+
+    cached_foo() # 5.0
+
+    var1[] = 3.0
+    var2[] = 2.0
+    var3[] = 1.0
+
+    cached_foo() # 7.0
+end
+
 @testitem "Test zero allocations" begin
     import FixedArguments: fix, FixedArgument, NotFixed, AutoPosition, FixedPosition
     import AllocCheck: check_allocs

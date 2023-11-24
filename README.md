@@ -71,7 +71,29 @@ The `fix` function also accepts a custom transformation function as its second a
 ```julia
 import FixedArguments: FixedPosition
 
-function unpack_from_cache_instead(::FixedPosition{P}, cache) where {P}
+function unpack_from_ref(::FixedPosition{P}, ref::Ref) where {P}
+    return ref[]
+end
+
+var1 = Ref(1.0)
+var2 = Ref(2.0)
+var3 = Ref(3.0)
+
+cached_foo = fix(foo, unpack_from_ref, (FixedArgument(var1), FixedArgument(var2), FixedArgument(var3)))
+
+cached_foo() # 5.0
+
+var1[] = 3.0
+var2[] = 2.0
+var3[] = 1.0
+
+cached_foo() # 7.0
+```
+
+Similarly, we could create a cached argument at a certain fixed positions:
+
+```julia
+function unpack_from_cache(::FixedPosition{P}, cache) where {P}
     return cache[P]
 end
 
@@ -81,15 +103,15 @@ some_global_cache[1] = 1.0
 some_global_cache[2] = 2.0
 some_global_cache[3] = 3.0
 
-cached_foo = fix(foo, unpack_from_cache_instead, (FixedArgument(some_global_cache), FixedArgument(some_global_cache), FixedArgument(some_global_cache)))
+cached_foo = fix(foo, unpack_from_cache, (FixedArgument(some_global_cache), FixedArgument(some_global_cache), FixedArgument(some_global_cache)))
 
-cached_foo() # 5.0
+@test cached_foo() == 5.0
 
 some_global_cache[1] = 3.0
 some_global_cache[2] = 2.0
 some_global_cache[3] = 1.0
 
-cached_foo() # 7.0
+@test cached_foo() == 7.0
 ```
 
 **Note** The object that is returned from the `fix` function is not a subtype of `Function`.
