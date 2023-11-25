@@ -1,7 +1,7 @@
 # FixedArguments
 
-[![Build Status](https://github.com/bvdmitri/FixedArgumentsCallable.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/bvdmitri/FixedArgumentsCallable.jl/actions/workflows/CI.yml?query=branch%3Amain)
-[![Coverage](https://codecov.io/gh/bvdmitri/FixedArgumentsCallable.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/bvdmitri/FixedArgumentsCallable.jl)
+[![Build Status](https://github.com/bvdmitri/FixedArguments.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/bvdmitri/FixedArguments.jl/actions/workflows/CI.yml?query=branch%3Amain)
+[![Coverage](https://codecov.io/gh/bvdmitri/FixedArguments.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/bvdmitri/FixedArguments.jl)
 [![Code Style: Blue](https://img.shields.io/badge/code%20style-blue-4495d1.svg)](https://github.com/invenia/BlueStyle)
 
 This package serves as a straightforward and lightweight extension of Julia's `Base.Fix1` and `Base.Fix2` functionalities. The key distinction of this package is its simplicity and lightweight design. Its single purpose is to generate __a function with fixed values__ for specific arguments __programmatically__, incurring __no additional computational overhead__. Notably, it is not using macro-based sugar-syntax in favor of an ultra-minimalistic API. Additionally, the package offers the ability to modify fixed values using a custom transform function.
