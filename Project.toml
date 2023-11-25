@@ -1,7 +1,7 @@
 name = "FixedArguments"
 uuid = "4130a065-6d82-41fe-881e-7a5c65156f7d"
 authors = ["Bagaev Dmitry <bvdmitri@gmail.com> and contributors"]
-version = "0.1.0"
+version = "0.1.1"
 
 [deps]
 TupleTools = "9d95972d-f1c8-5527-a6e0-b4b365fa01f6"
