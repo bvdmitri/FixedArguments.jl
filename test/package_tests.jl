@@ -109,13 +109,13 @@ end
 
     cached_foo = fix(foo, unpack_from_ref, (FixedArgument(var1), FixedArgument(var2), FixedArgument(var3)))
 
-    cached_foo() # 5.0
+    @test cached_foo() == 5.0
 
     var1[] = 3.0
     var2[] = 2.0
     var3[] = 1.0
 
-    cached_foo() # 7.0
+    @test cached_foo() == 7.0
 end
 
 @testitem "Test zero allocations" begin
